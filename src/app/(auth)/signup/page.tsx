@@ -97,12 +97,11 @@ function SignupPageInner() {
           <CardHeader className="items-center text-center">
             <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
               <Image
-    src="/brand.png"
-    alt="Brand"
-    width={24}
-    height={24}
-    className="object-contain"
-  />
+              src="/brand.png"
+              alt="Brand"
+              width={24}
+              height={24}
+              className="object-contain"/>
             </div>
             <CardTitle className="text-xl text-foreground">
               Check your email
@@ -141,20 +140,18 @@ function SignupPageInner() {
           <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
             {inviteToken ? (
               <Image
-    src="/brand.png"
-    alt="Brand"
-    width={24}
-    height={24}
-    className="object-contain"
-  />
+              src="/brand.png"
+              alt="Brand"
+              width={24}
+              height={24}
+              className="object-contain"/>
             ) : (
               <Image
-    src="/brand.png"
-    alt="Brand"
-    width={24}
-    height={24}
-    className="object-contain"
-  />
+              src="/brand.png"
+              alt="Brand"
+              width={24}
+              height={24}
+              className="object-contain"/>
             )}
           </div>
           <CardTitle className="text-xl text-foreground">
