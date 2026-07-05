@@ -194,7 +194,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
               className="object-contain"/>
             </div>
             <span className="text-sm font-semibold text-foreground">
-              MSI Whatsapp CRM
+              Magnet Solusi Integra
             </span>
           </Link>
           <button
