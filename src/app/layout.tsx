@@ -20,16 +20,17 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Magnet Solusi Integra CRM",
-    template: "%s — Magnet Solusi Integra CRM",
+    default: "Magnet Solusi Integra",
+    template: "%s — Magnet Solusi Integra",
   },
-  description: "WhatsApp CRM internal untuk tim Magnet Solusi Integra.",
+  description: "Self-hosted Omnichannel CRM.",
   robots: {
     index: false,
     follow: false,
   },
   icons: {
-    icon: [{ url: "/icon" }],
+    icon: [{ url: "/brand.png",
+        type: "image/png", }],
   },
   formatDetection: {
     email: false,
