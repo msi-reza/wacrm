@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -95,7 +96,13 @@ function SignupPageInner() {
         <Card className="w-full max-w-md border-border bg-card">
           <CardHeader className="items-center text-center">
             <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-              <CheckCircle className="h-6 w-6 text-primary" />
+              <Image
+    src="/brand.png"
+    alt="Brand"
+    width={24}
+    height={24}
+    className="object-contain"
+  />
             </div>
             <CardTitle className="text-xl text-foreground">
               Check your email
@@ -133,9 +140,21 @@ function SignupPageInner() {
         <CardHeader className="items-center text-center">
           <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
             {inviteToken ? (
-              <UsersRound className="h-6 w-6 text-primary" />
+              <Image
+    src="/brand.png"
+    alt="Brand"
+    width={24}
+    height={24}
+    className="object-contain"
+  />
             ) : (
-              <MessageSquare className="h-6 w-6 text-primary" />
+              <Image
+    src="/brand.png"
+    alt="Brand"
+    width={24}
+    height={24}
+    className="object-contain"
+  />
             )}
           </div>
           <CardTitle className="text-xl text-foreground">
