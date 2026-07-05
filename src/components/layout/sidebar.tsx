@@ -187,15 +187,14 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
         <div className="flex h-14 shrink-0 items-center justify-between gap-2 border-b border-border px-4">
           <Link href="/dashboard" className="flex items-center gap-2">
             <div className="relative h-8 w-8 overflow-hidden rounded-lg">
-  <Image
-    src="/brand.png"
-    alt="Brand Logo"
-    fill
-    className="object-contain"
-  />
-</div>
+            <Image
+              src="/brand.png"
+              alt="Brand Logo"
+              fill
+              className="object-contain"/>
+            </div>
             <span className="text-sm font-semibold text-foreground">
-              CRM for Whatsapp
+              MSI Whatsapp CRM
             </span>
           </Link>
           <button
