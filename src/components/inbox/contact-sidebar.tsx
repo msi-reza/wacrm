@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
-import type { Contact, Deal, ContactNote, Tag, CustomField } from "@/types";
+import type { Contact, Deal, ContactNote, Tag } from "@/types";
 import {
   Phone,
   Mail,
@@ -15,7 +15,6 @@ import {
   DollarSign,
   StickyNote,
   Plus,
-  ListChecks,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -31,9 +30,6 @@ export function ContactSidebar({ contact }: ContactSidebarProps) {
   const [deals, setDeals] = useState<Deal[]>([]);
   const [notes, setNotes] = useState<ContactNote[]>([]);
   const [tags, setTags] = useState<(Tag & { contact_tag_id: string })[]>([]);
-  const [customFields, setCustomFields] = useState<
-    (CustomField & { value: string })[]
-  >([]);
   const [newNote, setNewNote] = useState("");
   const [addingNote, setAddingNote] = useState(false);
 
@@ -42,29 +38,23 @@ export function ContactSidebar({ contact }: ContactSidebarProps) {
 
     const supabase = createClient();
 
-    // Fetch deals, notes, tags, and custom fields in parallel
-    const [dealsRes, notesRes, tagsRes, fieldsRes, valuesRes] =
-      await Promise.all([
-        supabase
-          .from("deals")
-          .select("*, stage:pipeline_stages(*)")
-          .eq("contact_id", contact.id)
-          .order("created_at", { ascending: false }),
-        supabase
-          .from("contact_notes")
-          .select("*")
-          .eq("contact_id", contact.id)
-          .order("created_at", { ascending: false }),
-        supabase
-          .from("contact_tags")
-          .select("id, tag_id, tags(*)")
-          .eq("contact_id", contact.id),
-        supabase.from("custom_fields").select("*").order("field_name"),
-        supabase
-          .from("contact_custom_values")
-          .select("*")
-          .eq("contact_id", contact.id),
-      ]);
+    // Fetch deals, notes, and tags in parallel
+    const [dealsRes, notesRes, tagsRes] = await Promise.all([
+      supabase
+        .from("deals")
+        .select("*, stage:pipeline_stages(*)")
+        .eq("contact_id", contact.id)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("contact_notes")
+        .select("*")
+        .eq("contact_id", contact.id)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("contact_tags")
+        .select("id, tag_id, tags(*)")
+        .eq("contact_id", contact.id),
+    ]);
 
     if (dealsRes.data) setDeals(dealsRes.data);
     if (notesRes.data) setNotes(notesRes.data);
@@ -76,21 +66,6 @@ export function ContactSidebar({ contact }: ContactSidebarProps) {
           contact_tag_id: ct.id as string,
         }));
       setTags(mapped);
-    }
-    if (fieldsRes.data) {
-      // contact_custom_values only has rows for fields that were actually
-      // filled in — build a lookup so unfilled fields still get "" rather
-      // than being dropped from the list.
-      const valueMap: Record<string, string> = {};
-      (valuesRes.data ?? []).forEach((v: Record<string, unknown>) => {
-        valueMap[v.custom_field_id as string] = (v.value as string) ?? "";
-      });
-      setCustomFields(
-        fieldsRes.data.map((field: CustomField) => ({
-          ...field,
-          value: valueMap[field.id] ?? "",
-        })),
-      );
     }
   }, [contact]);
 
@@ -315,37 +290,6 @@ export function ContactSidebar({ contact }: ContactSidebarProps) {
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="my-4 border-t border-border" />
-
-          {/* Custom Fields */}
-          <div>
-            <div className="flex items-center gap-2 px-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              <ListChecks className="h-3 w-3" />
-              Custom Fields
-            </div>
-            <div className="mt-2 space-y-2">
-              {customFields.length === 0 ? (
-                <p className="px-1 text-xs text-muted-foreground">
-                  No custom fields
-                </p>
-              ) : (
-                customFields.map((field) => (
-                  <div key={field.id} className="px-1">
-                    <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                      {field.field_name}
-                    </p>
-                    <p className="text-sm text-foreground">
-                      {field.value || (
-                        <span className="text-muted-foreground">—</span>
-                      )}
-                    </p>
-                  </div>
-                ))
-              )}
             </div>
           </div>
         </div>
